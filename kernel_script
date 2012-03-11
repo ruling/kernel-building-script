@@ -1,0 +1,46 @@
+#!/bin/bash
+#packages needed
+sudo apt-get install 'git-core gnupg flex bison gperf libsdl-dev libesd0-dev libwxgtk2.6-dev build-essential zip curl libncurses5-dev zlib1g-dev'
+sudo apt-get install 'ia32-libs lib32z1-dev lib32ncurses5-dev gcc-multilib g++-multilib'
+sudo ln -s ndktools/toolchain/need-to-link/cc1 /bin
+sudo ln -s ndktools/toolchain/need-to-link/cc1plus /bin
+sudo ln -s ndktools/toolchain/need-to-link/collect2 /bin
+sudo ln -s ndktools/toolchain/need-to-link/ar /bin
+sudo ln -s ndktools/toolchain/need-to-link/as /bin
+sudo ln -s ndktools/toolchain/need-to-link/c++ /bin
+sudo ln -s ndktools/toolchain/need-to-link/cc1 /bin
+sudo ln -s ndktools/toolchain/need-to-link/cc1plus /bin
+sudo ln -s ndktools/toolchain/need-to-link/collect2 /bin
+sudo ln -s ndktools/toolchain/need-to-link/g++ /bin
+sudo ln -s ndktools/toolchain/need-to-link/gcc /bin
+sudo ln -s ndktools/toolchain/need-to-link/ld /bin
+sudo ln -s ndktools/toolchain/need-to-link/nm /bin
+sudo ln -s ndktools/toolchain/need-to-link/objcopy /bin
+sudo ln -s ndktools/toolchain/need-to-link/objdump /bin
+sudo ln -s ndktools/toolchain/need-to-link/ranlib /bin
+sudo ln -s ndktools/toolchain/need-to-link/strip /bin
+sudo chmod 755 /ndktools/toolchain/need-to-link/
+sudo chmod 755 /ndktools/toolchain/bin/
+#toolchain
+$toolchain='/ndktools/toolchain/bin/arm-linux-androideabi-'
+#source
+echo -n "where is your source?(Ex /home/simon/kernel/) "
+read 'source'
+cd '$source'
+#config
+ echo -n "where is your config? (ex /home/simon/config) "
+ read 'config'
+ cp '$config' /'$source'/.config
+#now to open menuconfig
+echo "you can now edit your config"
+sleep 5
+make menuconfig
+echo "now time for the build, take the number of cores of your cpu has double it and add 1. What is that number:  "
+read cores
+sleep 3
+make -j'$cores' ARCH=arm CROSS_COMPILE='$toolchain'
+sleep 3
+echo "your kernel and modules are ready check the last few lines for their location"
+echo "you have to exit this manually, to allow for seeing the locations this stays open for 3000 seconds"
+sleep 3000
+
